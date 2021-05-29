@@ -1,0 +1,8 @@
+mysql-connector-python
+python-dotenv
+gensim
+quickumls
+spacy<3
+pymed
+pandas
+nltk
