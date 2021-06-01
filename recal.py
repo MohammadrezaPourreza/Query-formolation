@@ -1,9 +1,8 @@
 import numpy as np
 
 class Recal:
-    def __init__(self, expandeds):
+    def recal(self,expandeds):
         self._expandeds = expandeds
-    def recal(self):
         results = np.load('results.npy')
         output = []
         for i in range(len(self._expandeds)):

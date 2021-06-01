@@ -1,5 +1,6 @@
 from pandas import DataFrame
 from gensim.models import KeyedVectors
+from dataset_creator import Dataset
 from expander import Expander
 from recal import Recal
 from search import Search
@@ -25,9 +26,11 @@ topics = np.load('topics.npy')
 # df: DataFrame = searcher.query(q, expand=True)
 # df = df.astype({"pubmed_id": "int64"})
 output = []
-for i in range(len(topics)):
+for i in range(0,1):
     temp = []
     q = topics[i,1]
+    dataset_creator = Dataset(kv)
+    dataset_creator.returndataset(topics[i,0], q, 5)
     try :
         result = searcher.query(q, expand=True)
         temp.append(topics[i,0])
@@ -37,5 +40,5 @@ for i in range(len(topics)):
     except Exception as e:
         print("current failed topic : " + str(i))
 expanded = np.array(output,dtype=object)
-rec = Recal(expanded)
-ultimate_res = rec.recal()
+rec = Recal()
+ultimate_res = rec.recal(expanded)
