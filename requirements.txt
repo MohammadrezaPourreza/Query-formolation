@@ -1,8 +1,10 @@
-mysql-connector-python
-python-dotenv
-gensim
-quickumls
+mysql-connector-python~=8.0.25
+python-dotenv~=0.17.1
+gensim~=4.0.1
+quickumls~=1.4.0.post1
 spacy<3
-pymed
-pandas
-nltk
+pymed~=0.8.9
+pandas~=1.2.4
+nltk~=3.6.2
+
+numpy~=1.20.3

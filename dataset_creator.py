@@ -2,25 +2,41 @@ from expander import Expander
 from gensim.models import KeyedVectors
 from search import Search
 from recal import Recal
+import pandas as pd
+
 
 class Dataset:
     def __init__(self, kv: KeyedVectors):
         self._kv = kv
-    def returndataset(self,topic,query,topn,conjunction: str = " "):
+
+    def return_dataset(self, topic, query, topn, conjunction: str = " "):
         self.expander = Expander(self._kv)
-        cuis = self.expander._expand_term(query,topn)
+        searcher = Search(self.expander)
+        try:
+            cuis = self.expander._expand_term(query, topn)
+        except Exception as e:
+            return None
         output = []
-        result = self.search_sentence(query)
-        output.append([query,result])
+        result = self.search_sentence(query, searcher)
+        output.append([query, result])
         for key in cuis.keys():
             for tupple in cuis[key]:
-                newQ = query+conjunction+tupple[1]
-                result = self.search_sentence(newQ)
-                if result>0:
-                    output.append([newQ,result])
+                if tupple[1] is None:
+                    continue
+                newQ = query + conjunction + tupple[1]
+                result = self.search_sentence(newQ, searcher)
+                if len(result) > 0:
+                    output.append([newQ, result])
+
         recal = Recal()
         for expansion in output:
-            recal.recal([topic,expansion[1]])
-    def search_sentence(self , query):
-        searcher = Search(self.expander)
+            rec = recal.recall_for_dataset((topic, expansion[1]))
+            expansion.append(rec)
+
+        output = pd.DataFrame(output)
+        output.columns = ['query', 'results', 'recall']
+        return output
+
+    def search_sentence(self, query, searcher):
+
         return searcher._search_pubmed(query=query)

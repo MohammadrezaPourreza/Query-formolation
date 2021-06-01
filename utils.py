@@ -26,7 +26,7 @@ matcher = QuickUMLS(
     accepted_semtypes=ACCEPTED_SEMTYPES,
 )
 
-CORE_NLP_DIR = "D:\stanford-corenlp-4.2.2\stanford-corenlp-4.2.2"
+CORE_NLP_DIR = "E:\SLR\stanford-corenlp-4.2.2"
 CORE_NLP_VER = "4.2.2"
 try:
     server = CoreNLPServer(path.join(CORE_NLP_DIR, "stanford-corenlp-{}.jar".format(CORE_NLP_VER)),
