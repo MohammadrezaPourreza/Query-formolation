@@ -2,9 +2,11 @@ import numpy as np
 import pandas as pd
 
 
-class Recal:
+class Evaluation:
     relevants = np.load('results.npy')
     relevants_df = pd.DataFrame(relevants)
+    relevants_df.columns =  ['topic_id','results']
+    group = relevants_df.groupby(by='topic_id')
 
     def recal(self, expandeds):
         self._expandeds = expandeds
@@ -21,8 +23,6 @@ class Recal:
             for item in self._expandeds[i, 1]:
                 for res in results:
                     if res[0] == title:
-                        # print(res[0]+"----"+res[1])
-                        # print(title + "++++"+item[0])
                         if res[1] == item:
                             count += 1
             print("recall at 1000 for title " + title + " is : " + str(100 * (count / total)))
@@ -42,34 +42,25 @@ class Recal:
         topic = results[0]
         res = results[1]
         total = self.calculate_total(topic)
-        count = 0
-        for item in self.relevants:
-            if item[0] == topic:
-                for item2 in res:
-                    if item[1] == item2:
-                        count += 1
-        return (count / total) * 100
+        temp = self.relevants_df.loc[self.group.groups[topic]]
+        count = temp.isin(res)
+        count = count.results
+        count = count.value_counts()[True]
+        return (count/total)*100
 
     def percision(self, results):
         topic = results[0]
         res = results[1]
-        if len(res) == 0:
-            return 0
-        count = 0
-        for item in self.relevants:
-            if item[0] == topic:
-                for item2 in res:
-                    if item[1] == item2:
-                        count += 1
-        total = self.calculate_total(topic)
+        total = len(res)
+        temp = self.relevants_df.loc[self.group.groups[topic]]
+        count = temp.isin(res)
+        count = count.results
+        count = count.value_counts()[True]
         return (count / total) * 100
 
     def calculate_total(self, cui):
-        total = 0
-        for item in self.relevants:
-            if item[0] == cui:
-                total += 1
-        return total
+        return  len(self.group.groups[cui])
+
 
 
 

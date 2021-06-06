@@ -1,7 +1,7 @@
 from expander import Expander
 from gensim.models import KeyedVectors
 from search import Search
-from recal import Recal
+from Evaluation import Evaluation
 import pandas as pd
 
 
@@ -19,7 +19,7 @@ class Dataset:
             return None
         output = []
         result , numberOfResult= self.search_sentence(query, searcher)
-        output.append([query, result, ''])
+        output.append([query, result, '',numberOfResult])
         for key in cuis.keys():
             for item in cuis[key]:
                 if item[1] is None:
@@ -27,19 +27,19 @@ class Dataset:
                 newQ = query + " " + conjunction + " " + item[1]
                 result , numberOfResult = self.search_sentence(newQ, searcher)
                 if len(result) > 0:
-                    output.append([newQ, result, item[1]])
+                    output.append([newQ, result, item[1],numberOfResult])
 
-        recal = Recal()
+        recal = Evaluation()
         for expansion in output:
             rec = recal.recall_for_dataset((topic, expansion[1]))
             perc = recal.percision((topic, expansion[1]))
             expansion.append(rec)
             expansion.append(perc)
             expansion.append(topic)
-            expansion.append(numberOfResult)
+
 
         output = pd.DataFrame(output)
-        output.columns = ['query', 'results', 'expanded_term', 'recall', 'precision', 'topic_id','Total_output']
+        output.columns = ['query', 'results', 'expanded_term','Total_output', 'recall', 'precision', 'topic_id']
         output = output.drop(['results'], axis=1)
         return output
 
