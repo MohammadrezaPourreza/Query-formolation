@@ -19,12 +19,12 @@ class Search:
 
     def _expand_and_search(self, query: str, max_records: int = 100):
         expanded_query = self._expander.expand(query, 5)
-        return self._search_pubmed(expanded_query, max_records)
+        return self.search_pubmed(expanded_query, max_records)
 
     def _query_no_expansion(self, query: str, max_records: int = 100):
-        return self._search_pubmed(query, max_records)
+        return self.search_pubmed(query, max_records)
 
-    def _search_pubmed(self, query: str, max_records=10000) -> DataFrame:
+    def search_pubmed(self, query: str, max_records=10000) -> DataFrame:
         pubmed = PubMed(tool="PubMedSearcher_hamid", email="s.hamid.sajjadi@gmail.com")
 
         search_term = query

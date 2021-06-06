@@ -6,9 +6,9 @@ from typing import Iterable, Tuple, List
 
 load_dotenv()
 cnx = mysql.connector.connect(
-    host="localhost",
+    host="172.18.28.17",
     user="root",
-    password="sefteghoot",
+    password="Kholmed@ng98",
     database="umls",
 )
 

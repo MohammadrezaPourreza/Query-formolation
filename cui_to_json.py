@@ -3,7 +3,7 @@ import json
 import csv
 
 cnx = mysql.connector.connect(
-    host='localhost', user='root', password='sefteghoot', database='umls')
+    host='172.18.28.17', user='root', password='Kholmed@ng98', database='umls')
 
 
 def get_cui_count(from_cui=None):

@@ -20,7 +20,7 @@ class Expander(IExpander):
     def _expand_cui(self, cui: str, topn):
         return self._kv.most_similar(positive=cui, topn=topn)
 
-    def _expand_term(self, phrase: str, topn=10) -> Dict[str, List[Tuple[str, str]]]:
+    def expand_term(self, phrase: str, topn=10) -> Dict[str, List[Tuple[str, str]]]:
         """
         This function, extracts CUI from the term using quickumls and 
         :param phrase : str
@@ -52,7 +52,7 @@ class Expander(IExpander):
         nouns: list[str] = tag_sentence_stanford(query)
         and_clauses = []
         for noun in nouns:
-            expanded_noun = self._expand_term(noun, topn)
+            expanded_noun = self.expand_term(noun, topn)
             or_clauses = []
             for key, value in expanded_noun.items():
                 or_clause = ' OR '.join(['"{}"'.format(v[1]) for v in value])

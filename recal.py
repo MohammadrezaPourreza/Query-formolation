@@ -1,8 +1,10 @@
 import numpy as np
+import pandas as pd
 
 
 class Recal:
     relevants = np.load('results.npy')
+    relevants_df = pd.DataFrame(relevants)
 
     def recal(self, expandeds):
         self._expandeds = expandeds
@@ -37,17 +39,38 @@ class Recal:
         return arr
 
     def recall_for_dataset(self, results):
+        topic = results[0]
+        res = results[1]
+        total = self._calculate_total(topic)
         count = 0
-        total = self._calculate_total(results[0])
-        for item in results[1]:
-            for rel in self.relevants:
-                if rel[1] == item:
-                    count += 1
+        for item in self.relevants:
+            if item[0] == topic:
+                for item2 in res:
+                    if item[1] == item2:
+                        count += 1
         return (count / total) * 100
 
-    def _calculate_total(self, cui):
+    def percision(self, results):
+
+        topic = results[0]
+        res = results[1]
+        if len(res) == 0:
+            return 0
+        count = 0
+        for item in self.relevants:
+            if item[0] == topic:
+                for item2 in res:
+                    if item[1] == item2:
+                        count += 1
+        total = self.calculate_total(topic)
+        return (count / total) * 100
+
+    def calculate_total(self, cui):
         total = 0
         for item in self.relevants:
             if item[0] == cui:
                 total += 1
         return total
+
+
+
