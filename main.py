@@ -27,12 +27,12 @@ topics = np.load('topics.npy')
 # df: DataFrame = searcher.query(q, expand=True)
 # df = df.astype({"pubmed_id": "int64"})
 output = None
-for i in range(len(topics)):
+for i in range(1):
     temp = []
     q = topics[i, 1]
     dataset_creator = Dataset(kv)
 
-    df = dataset_creator.return_dataset(topics[i, 0], q, 5)
+    df = dataset_creator.return_dataset(topics[i, 0], q, 0, "OR")
     if df is not None:
         if i != 0:
             output = pd.concat([output, df])
@@ -49,4 +49,4 @@ for i in range(len(topics)):
 # expanded = np.array(output, dtype=object)
 # rec = Recal()
 # ultimate_res = rec.recal(expanded)
-output.to_csv('dataset.csv')
+# output.to_csv('dataset.csv')
