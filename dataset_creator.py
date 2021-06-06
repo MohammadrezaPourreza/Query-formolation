@@ -18,14 +18,14 @@ class Dataset:
         except Exception as e:
             return None
         output = []
-        result = self.search_sentence(query, searcher)
+        result , numberOfResult= self.search_sentence(query, searcher)
         output.append([query, result, ''])
         for key in cuis.keys():
             for item in cuis[key]:
                 if item[1] is None:
                     continue
                 newQ = query + " " + conjunction + " " + item[1]
-                result = self.search_sentence(newQ, searcher)
+                result , numberOfResult = self.search_sentence(newQ, searcher)
                 if len(result) > 0:
                     output.append([newQ, result, item[1]])
 
@@ -36,9 +36,10 @@ class Dataset:
             expansion.append(rec)
             expansion.append(perc)
             expansion.append(topic)
+            expansion.append(numberOfResult)
 
         output = pd.DataFrame(output)
-        output.columns = ['query', 'results', 'expanded_term', 'recall', 'precision', 'topic_id']
+        output.columns = ['query', 'results', 'expanded_term', 'recall', 'precision', 'topic_id','Total_output']
         output = output.drop(['results'], axis=1)
         return output
 

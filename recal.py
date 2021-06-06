@@ -41,7 +41,7 @@ class Recal:
     def recall_for_dataset(self, results):
         topic = results[0]
         res = results[1]
-        total = self._calculate_total(topic)
+        total = self.calculate_total(topic)
         count = 0
         for item in self.relevants:
             if item[0] == topic:
@@ -51,7 +51,6 @@ class Recal:
         return (count / total) * 100
 
     def percision(self, results):
-
         topic = results[0]
         res = results[1]
         if len(res) == 0:

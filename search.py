@@ -30,6 +30,7 @@ class Search:
         search_term = query
         print("query : "+query)
         number_of_articles = pubmed.getTotalResultsCount(query)
+
         print("total result for query is : "+str(number_of_articles))
         if number_of_articles > 100000:
             number_of_articles = 100000
@@ -53,4 +54,4 @@ class Search:
         articlesPD = pd.DataFrame.from_dict(articleInfo)
         # print(articlesPD)
         # print(articleInfo)
-        return articleInfo
+        return articleInfo , number_of_articles
